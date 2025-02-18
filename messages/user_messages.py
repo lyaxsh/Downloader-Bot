@@ -18,10 +18,10 @@ def captions_settings():
 
 def captions(user_captions, post_caption, bot_url):
     if user_captions == "on" and post_caption is not None:
-        return ('{post_caption}\n\n<a href="{bot_url}">💻Powered by MaxLoad</a>').format(post_caption=post_caption,
+        return ('{post_caption}\n\n<a href="{bot_url}">💻Powered by ENGIMA</a>').format(post_caption=post_caption,
                                                                                         bot_url=bot_url)
     else:
-        return ('<a href="{bot_url}">💻Powered by MaxLoad</a>').format(bot_url=bot_url)
+        return ('<a href="{bot_url}">💻Powered by ENIGMA</a>').format(bot_url=bot_url)
 
 
 def join_group(chat_title):
