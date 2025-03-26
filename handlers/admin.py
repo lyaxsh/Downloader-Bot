@@ -1,3 +1,4 @@
+from log.logger import logger as logging
 import asyncio
 import os
 
@@ -5,6 +6,7 @@ from aiogram import types, F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+from aiogram.types import BufferedInputFile
 
 from main import bot, db
 from filters import IsBotAdmin
@@ -44,6 +46,34 @@ async def admin(message: types.Message):
         await message.answer(bm.not_groups())
 
 
+@router.callback_query(F.data == 'delete_log')
+async def del_log(call: types.CallbackQuery):
+    await bot.send_chat_action(call.message.chat.id, "typing")
+    logging.shutdown()
+    open('log/bot_log.log', 'w').close()
+    await call.message.reply(bm.log_deleted())
+    await call.answer()
+
+
+@router.callback_query(F.data == 'download_log')
+async def download_log_handler(call: types.CallbackQuery):
+    await bot.send_chat_action(call.message.chat.id, "typing")
+
+    log_files = [
+        ('log/bot_log.log', 'bot_log.log'),
+        ('log/error_log.log', 'error_log.log')
+    ]
+    user_id = call.from_user.id
+
+    await call.answer()
+
+    for file_path, filename in log_files:
+        with open(file_path, 'rb') as file:
+            await call.message.answer_document(BufferedInputFile(file.read(), filename=filename))
+
+    logging.info(f"User action: Downloaded logs (User ID: {user_id})")
+
+
 @router.callback_query(F.data == 'back_to_admin')
 async def back_to_admin(call: types.CallbackQuery):
     await bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -77,14 +107,14 @@ async def send_to_all_message(message: types.Message, state: FSMContext):
         users = await db.all_users()
         for user in users:
             try:
-                await bot.copy_message(chat_id=user[0],
+                await bot.copy_message(chat_id=user,
                                        from_chat_id=sender_id,
                                        message_id=message.message_id)
 
-                user_status = await db.status(user[0])
+                user_status = await db.status(user)
 
                 if user_status == "inactive":
-                    await db.set_active(user[0])
+                    await db.set_active(user)
 
                 await asyncio.sleep(
                     0.05
@@ -93,10 +123,10 @@ async def send_to_all_message(message: types.Message, state: FSMContext):
             except Exception as e:
 
                 if str(e) == "Forbidden: bots can't send messages to bots":
-                    await db.delete_user(user[0])
+                    await db.delete_user(user)
 
                 if "blocked" or "Chat not found" in str(e):
-                    await db.set_inactive(user[0])
+                    await db.set_inactive(user)
                 continue
 
         await bot.send_message(chat_id=message.chat.id,

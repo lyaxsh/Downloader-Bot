@@ -1,4 +1,3 @@
-import logging
 import os
 
 import httpx
@@ -12,18 +11,13 @@ from aiocron import crontab
 from config import BOT_TOKEN, BOT_COMMANDS, OUTPUT_DIR, custom_api_url, MEASUREMENT_ID, API_SECRET
 from services.db import DataBase
 
-logging.basicConfig(level=logging.INFO)
-
-custom_timeout = 600  # 10 minutes
-
+custom_timeout = 600
 session = AiohttpSession(
     api=TelegramAPIServer.from_base(custom_api_url),
     timeout=custom_timeout
 )
-
 default = DefaultBotProperties(parse_mode=ParseMode.HTML)
 bot = Bot(token=BOT_TOKEN, default=default, session=session)
-
 dp = Dispatcher()
 
 db = DataBase()
