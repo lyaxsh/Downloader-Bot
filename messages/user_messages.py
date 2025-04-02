@@ -3,7 +3,7 @@ def cancel():
 
 
 def welcome_message():
-    return ("Welcome to MaxLoad Downloader! Send me a link to download the video.")
+    return ("Welcome to Shilajeet Downloader! Send me a link to download the video.")
 
 
 def settings():
