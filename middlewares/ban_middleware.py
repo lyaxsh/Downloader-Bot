@@ -15,7 +15,7 @@ class UserBannedMiddleware(BaseMiddleware):
             user_status = 'active'
         if user_status == 'ban':
             if message.chat.type == 'private':
-                await message.answer(('You are banned please contact to @mak5er for more information!'),
+                await message.answer(('You are banned please contact to @sardonic_001 for more information!'),
                                      parse_mode='HTML')
             raise asyncio.CancelledError
 
@@ -25,7 +25,7 @@ class UserBannedMiddleware(BaseMiddleware):
         except:
             user_status = 'active'
         if user_status == 'ban':
-            await callback_query.answer(('You are banned please contact to @mak5er for more information!'),
+            await callback_query.answer(('You are banned please contact to @msardonic_001 for more information!'),
                                         show_alert=True)
             raise asyncio.CancelledError
 
