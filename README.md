@@ -1,4 +1,4 @@
-![Downloader-Bot](https://socialify.git.ci/Mak5er/Downloader-Bot/image?description=1&language=1&name=1&owner=1&theme=Dark)
+![Downloader-Bot](https://socialify.git.ci/lyaxsh/Downloader-Bot/image?description=1&font=Raleway&language=1&name=1&owner=1&theme=Dark)
 
 # Python Downloader-Bot
 
