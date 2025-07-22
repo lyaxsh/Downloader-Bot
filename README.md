@@ -94,3 +94,5 @@ an issue or submit a pull request.
 This code is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
 Feel free to modify and use this code for your own Telegram bot projects.
+
+Special thanks to - [Mak5er](https://github.com/Mak5er)
